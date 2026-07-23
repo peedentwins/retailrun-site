@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RetailRun — You're already going. Take someone with you.</title>
+<meta name="description" content="RetailRun turns a trip you're already making into a run for your circle. Announce where you are, they order, you deliver. 10% flat. No store commission, no delivery fee, no minimum.">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="RetailRun — You're already going. Take someone with you.">
+<meta property="og:description" content="Not a delivery app. RetailRun is for the runs you already make — coffee for the desk, a stop on the way over. Only people you've invited.">
+<meta property="og:image" content="logo-mark-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0A0F;
+  --ink-2:#101018;
+  --paper:#F5F7FB;
+  --dim:rgba(245,247,251,.50);
+  --faint:rgba(245,247,251,.26);
+  --line:rgba(245,247,251,.11);
+  --go:#99d63a;
+  --near:#2078fa;
+  --circle:#2078fa;
+  --warn:#F59E0B;
+  --display:'Archivo',system-ui,sans-serif;
+  --body:'Instrument Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --pad:clamp(20px,5vw,64px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ink);color:var(--paper);
+  font-family:var(--body);font-size:17px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--near);outline-offset:3px;border-radius:4px}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);margin:0 0 20px;
+}
+.rule{height:1px;background:var(--line);border:0;margin:0}
+
+/* ---------- nav ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+  background:rgba(10,10,15,.78);border-bottom:1px solid var(--line);
+}
+.nav-in{display:flex;align-items:center;gap:14px;height:64px}
+.mark{height:26px;width:auto;flex:none;display:block}
+.nav-name{font-family:var(--display);font-variation-settings:'wdth' 100,'wght' 600;
+  font-size:19px;letter-spacing:-.015em}
+.wm-a{color:var(--near)}
+.wm-b{color:var(--go)}
+.nav-spacer{flex:1}
+.pill{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid rgba(32,120,250,.34);color:var(--near);
+  background:rgba(32,120,250,.09);padding:6px 12px;border-radius:999px;white-space:nowrap;
+}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(48px,9vw,104px) 0 clamp(40px,7vw,80px)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center}
+.h1{
+  font-family:var(--display);
+  font-size:clamp(40px,6.4vw,78px);
+  font-variation-settings:'wdth' 112,'wght' 800;
+  line-height:.98;letter-spacing:-.028em;margin:0 0 22px;
+}
+.h1 em{font-style:normal;color:var(--go)}
+.lede{font-size:clamp(17px,1.5vw,20px);color:var(--dim);margin:0 0 32px;max-width:34ch}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{
+  display:inline-block;font-family:var(--body);font-weight:600;font-size:15px;
+  padding:14px 26px;border-radius:12px;text-decoration:none;border:1px solid transparent;
+  transition:transform .15s ease,background .15s ease;
+}
+.btn-go{background:var(--go);color:#08140A}
+.btn-go:hover{transform:translateY(-1px);background:#a9e64a}
+.btn-ghost{border-color:var(--line);color:var(--paper)}
+.btn-ghost:hover{border-color:var(--faint)}
+.hero-note{font-family:var(--mono);font-size:12px;color:var(--faint);margin:18px 0 0}
+
+/* ---------- signature: the announcement ---------- */
+.stage{
+  border:1px solid var(--line);border-radius:20px;background:
+    radial-gradient(120% 100% at 50% 0%,rgba(32,120,250,.10),transparent 62%),var(--ink-2);
+  padding:22px;position:relative;overflow:hidden;
+}
+.stage-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--faint);margin:0 0 16px;
+}
+.store{display:flex;align-items:center;gap:13px;position:relative;z-index:2}
+.store-badge{
+  width:44px;height:44px;border-radius:13px;flex:none;display:grid;place-items:center;
+  background:rgba(32,120,250,.13);border:1px solid rgba(32,120,250,.3);font-size:20px;
+}
+.store-name{font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:-.01em}
+.store-meta{font-family:var(--mono);font-size:11.5px;color:var(--near)}
+.ripple{
+  position:absolute;left:22px;top:22px;width:44px;height:44px;border-radius:50%;
+  border:1px solid rgba(32,120,250,.5);z-index:1;
+}
+.quote{
+  margin:18px 0 6px;padding:14px 16px;border-radius:13px;
+  background:rgba(245,247,251,.05);border:1px solid var(--line);
+  font-size:15px;color:var(--paper);
+}
+.recips{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.recip{
+  display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:12px;
+  background:rgba(32,120,250,.08);border:1px solid rgba(32,120,250,.24);
+}
+.recip-av{
+  width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:rgba(32,120,250,.2);color:#8fbcff;font-size:13px;font-weight:600;
+}
+.recip-name{flex:1;font-size:14.5px;font-weight:500}
+.recip-dist{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.chip{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:4px 9px;border-radius:999px;
+  background:rgba(153,214,58,.14);color:var(--go);border:1px solid rgba(153,214,58,.3);white-space:nowrap;
+}
+.tally{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-top:16px;padding-top:14px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:12px;color:var(--dim);
+}
+.tally b{color:var(--go);font-weight:500}
+
+/* staged reveal */
+.seq{opacity:0;transform:translateY(9px);animation:rise .55s cubic-bezier(.2,.7,.3,1) forwards}
+.d1{animation-delay:.15s}.d2{animation-delay:.75s}.d3{animation-delay:1.15s}
+.d4{animation-delay:1.45s}.d5{animation-delay:1.75s}.d6{animation-delay:2.2s}
+@keyframes rise{to{opacity:1;transform:none}}
+.ripple{animation:ping 2.8s ease-out .5s infinite}
+@keyframes ping{
+  0%{transform:scale(1);opacity:.75}
+  70%{transform:scale(2.7);opacity:0}
+  100%{transform:scale(2.7);opacity:0}
+}
+
+/* ---------- sections ---------- */
+.band{padding:clamp(56px,8vw,104px) 0}
+.band-head{max-width:44ch;margin:0 0 44px}
+.h2{
+  font-family:var(--display);font-variation-settings:'wdth' 106,'wght' 700;
+  font-size:clamp(28px,3.6vw,42px);line-height:1.08;letter-spacing:-.02em;margin:0 0 14px;
+}
+.band-sub{color:var(--dim);margin:0;font-size:17px}
+
+/* how it works — a real sequence, so it's numbered */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.step{background:var(--ink);padding:28px 24px}
+.step-n{font-family:var(--mono);font-size:11px;color:var(--near);letter-spacing:.14em;margin:0 0 14px}
+.step-t{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin:0 0 8px}
+.step-b{color:var(--dim);font-size:15px;margin:0}
+
+/* the receipt */
+.receipt-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.receipt{border:1px solid var(--line);border-radius:18px;padding:26px;background:var(--ink-2)}
+.receipt.ours{border-color:rgba(153,214,58,.32);background:rgba(153,214,58,.05)}
+.receipt-h{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dim);margin:0 0 18px}
+.receipt.ours .receipt-h{color:var(--go)}
+.li{display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);
+  font-size:13px;padding:8px 0;color:var(--dim)}
+.li span:last-child{color:var(--paper);white-space:nowrap}
+.li.zero span:last-child{color:var(--go)}
+.li.tot{border-top:1px solid var(--line);margin-top:10px;padding-top:14px;font-size:15px;color:var(--paper)}
+.receipt.ours .li.tot span:last-child{color:var(--go)}
+.receipt-note{font-size:13.5px;color:var(--dim);margin:16px 0 0;line-height:1.5}
+
+/* privacy */
+.priv{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{border:1px solid var(--line);border-radius:18px;padding:26px;background:var(--ink-2)}
+.card-t{font-family:var(--display);font-weight:700;font-size:17px;margin:0 0 10px;letter-spacing:-.01em}
+.card-b{color:var(--dim);font-size:15px;margin:0}
+.card-k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--circle);margin:0 0 14px}
+
+/* season */
+.season{border:1px solid var(--line);border-radius:20px;padding:clamp(26px,4vw,44px);
+  background:radial-gradient(110% 130% at 8% 0%,rgba(32,120,250,.14),transparent 58%),var(--ink-2)}
+.season-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,4vw,52px);align-items:center}
+.ledger{display:grid;gap:9px}
+.led{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12.5px;
+  padding:11px 14px;border-radius:11px;background:rgba(245,247,251,.04);border:1px solid var(--line)}
+.led span:last-child{color:var(--go)}
+
+/* stance + chain + nft */
+.stance{margin-top:22px;border:1px solid rgba(32,120,250,.26);border-radius:18px;
+  background:rgba(32,120,250,.07);padding:clamp(22px,3.4vw,34px)}
+.stance-t{font-family:var(--display);font-variation-settings:'wdth' 104,'wght' 700;
+  font-size:clamp(19px,2.3vw,26px);letter-spacing:-.015em;margin:0 0 10px;color:var(--near)}
+.stance-b{margin:0;color:var(--dim);font-size:16px;max-width:62ch}
+.chain-step{display:flex;gap:14px;align-items:flex-start;margin:0 0 15px;
+  color:var(--dim);font-size:15.5px;line-height:1.5}
+.chain-n{font-family:var(--mono);font-size:11px;color:var(--near);padding-top:3px;flex:none}
+.tok{color:var(--go);font-weight:600}
+.led-tot{background:rgba(153,214,58,.08);border-color:rgba(153,214,58,.26)}
+.nft-head{margin:clamp(38px,5vw,60px) 0 26px;max-width:52ch}
+.h3{font-family:var(--display);font-variation-settings:'wdth' 104,'wght' 700;
+  font-size:clamp(22px,2.6vw,30px);letter-spacing:-.018em;margin:0 0 12px}
+.nft-card{display:flex;flex-direction:column}
+.nft-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nft-top .card-k{margin:0}
+.soon{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 8px;border-radius:999px;background:rgba(245,247,251,.06);
+  border:1px solid var(--line);color:var(--dim);white-space:nowrap}
+.soon-free{background:rgba(153,214,58,.13);border-color:rgba(153,214,58,.3);color:var(--go)}
+.mult{font-family:var(--display);font-variation-settings:'wdth' 108,'wght' 800;
+  font-size:clamp(34px,4.4vw,46px);letter-spacing:-.03em;margin:16px 0 12px;color:var(--go)}
+.mult-none{color:var(--faint)}
+.axie{margin-top:22px;border:1px solid var(--line);border-radius:18px;
+  background:var(--ink-2);padding:clamp(22px,3.4vw,30px)}
+.axie-t{font-family:var(--display);font-variation-settings:'wght' 700;font-size:18px;
+  margin:0 0 8px;color:var(--near)}
+.axie-b{margin:0;color:var(--dim);font-size:15.5px;max-width:66ch}
+
+/* cta + footer */
+.close{text-align:center;padding:clamp(60px,9vw,116px) 0}
+.close .h2{margin-left:auto;margin-right:auto;max-width:18ch}
+.foot{border-top:1px solid var(--line);padding:30px 0 44px;color:var(--faint);font-size:13px}
+.foot-in{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.foot a{text-decoration:none;color:var(--dim)}
+.foot a:hover{color:var(--paper)}
+.disc{font-family:var(--mono);font-size:11px;color:var(--faint);margin:14px 0 0;max-width:70ch;line-height:1.6}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .hero-grid,.season-grid{grid-template-columns:1fr}
+  .steps,.priv{grid-template-columns:1fr}
+  .receipt-grid{grid-template-columns:1fr}
+  .h1{font-size:clamp(36px,10vw,54px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .seq{animation:none;opacity:1;transform:none}
+  .ripple{animation:none;opacity:.3}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <img class="mark" src="logo-mark.png" alt="RetailRun logo" width="38" height="26">
+    <div class="nav-name"><span class="wm-a">retail</span><span class="wm-b">run</span></div>
+    <div class="nav-spacer"></div>
+    <div class="pill">Alpha — invite only</div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Runner-initiated commerce</p>
+      <h1 class="h1">You're already going.<br><em>Take someone with you.</em></h1>
+      <p class="lede">
+        You're at Starbucks before work. Four coworkers want something.
+        RetailRun is the tap that asks them — and the way they pay you back.
+      </p>
+      <div class="cta-row">
+        <a class="btn btn-go" href="#join">Join the alpha</a>
+        <a class="btn btn-ghost" href="#what">What this actually is</a>
+      </div>
+      <p class="hero-note">Only people you've invited · Never a stranger</p>
+    </div>
+
+    <div class="stage" aria-label="Example of a run announcement">
+      <p class="stage-label">Live run</p>
+      <div class="ripple" aria-hidden="true"></div>
+
+      <div class="store seq d1">
+        <div class="store-badge">🏪</div>
+        <div>
+          <div class="store-name">7-Eleven · Highland Ave</div>
+          <div class="store-meta">Daniel is inside · 0.3 mi from you</div>
+        </div>
+      </div>
+
+      <div class="quote seq d2">"Grabbing coffee. Anyone want anything?"</div>
+
+      <ul class="recips">
+        <li class="recip seq d3">
+          <div class="recip-av">M</div>
+          <div class="recip-name">Mom</div>
+          <div class="recip-dist">1 mi</div>
+          <div class="chip">2 items</div>
+        </li>
+        <li class="recip seq d4">
+          <div class="recip-av">J</div>
+          <div class="recip-name">Jess</div>
+          <div class="recip-dist">2 mi</div>
+          <div class="chip">1 item</div>
+        </li>
+        <li class="recip seq d5">
+          <div class="recip-av">R</div>
+          <div class="recip-name">Ray</div>
+          <div class="recip-dist">4 mi</div>
+          <div class="recip-dist">no thanks</div>
+        </li>
+      </ul>
+
+      <div class="tally seq d6">
+        <span>3 notified · 2 ordered</span>
+        <span><b>$6.40 tips</b> to the runner</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<section class="band" id="what">
+  <div class="wrap">
+    <div class="band-head">
+      <h2 class="h2">It's not delivery.<br>It's a favor.</h2>
+      <p class="band-sub">
+        RetailRun isn't for ordering from strangers. It only works inside circles
+        you build yourself — coworkers, friends, family, neighbors. People who
+        would already do this for you.
+      </p>
+    </div>
+
+    <div class="priv">
+      <div class="card">
+        <p class="card-k">Before work</p>
+        <h3 class="card-t">Coffee for the desk</h3>
+        <p class="card-b">You're in line at Starbucks anyway. Four coworkers want in. You carry a tray instead of a cup.</p>
+      </div>
+      <div class="card">
+        <p class="card-k">On your way</p>
+        <h3 class="card-t">Passing a store</h3>
+        <p class="card-b">Driving to a friend's place and there's a shop on the corner. Ask before you park.</p>
+      </div>
+      <div class="card">
+        <p class="card-k">Already there</p>
+        <h3 class="card-t">Standing in the aisle</h3>
+        <p class="card-b">Sunday grocery run. Your neighbor needs milk and you're right next to it.</p>
+      </div>
+    </div>
+
+    <div class="stance">
+      <p class="stance-t">No strangers. No shifts. No app telling you where to drive.</p>
+      <p class="stance-b">
+        Nobody can send you an order unless you've both accepted an invite. There's
+        no public pool of jobs, no rating to protect, no quota. You go where you were
+        already going, and the only people who see it are the ones you chose.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="band-head">
+      <h2 class="h2">Nobody drives anywhere extra</h2>
+      <p class="band-sub">
+        Delivery apps send a stranger on a trip that wouldn't otherwise happen.
+        RetailRun rides along with one that already is.
+      </p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <p class="step-n">STEP 01</p>
+        <h3 class="step-t">Announce</h3>
+        <p class="step-b">You walk into a store and tell your circle you're there. Takes one tap.</p>
+      </div>
+      <div class="step">
+        <p class="step-n">STEP 02</p>
+        <h3 class="step-t">They order</h3>
+        <p class="step-b">People nearby get a notification, browse the menu, and send you a short list.</p>
+      </div>
+      <div class="step">
+        <p class="step-n">STEP 03</p>
+        <h3 class="step-t">You deliver</h3>
+        <p class="step-b">Drop it off on your way. You're reimbursed for the receipt and keep every cent of the tip.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <h2 class="h2">Read the receipt</h2>
+      <p class="band-sub">
+        Most delivery apps stack four or five charges on a $20 order. We charge one, and we show it.
+      </p>
+    </div>
+    <div class="receipt-grid">
+      <div class="receipt">
+        <p class="receipt-h">Typical delivery app</p>
+        <div class="li"><span>Items</span><span>$20.00</span></div>
+        <div class="li"><span>Marked-up menu prices</span><span>+ $3.00</span></div>
+        <div class="li"><span>Delivery fee</span><span>+ $3.99</span></div>
+        <div class="li"><span>Service fee</span><span>+ $3.00</span></div>
+        <div class="li"><span>Small-order fee</span><span>+ $2.00</span></div>
+        <div class="li tot"><span>You pay</span><span>$31.99</span></div>
+        <p class="receipt-note">Plus a tip, which the platform may count toward the courier's guaranteed pay.</p>
+      </div>
+      <div class="receipt ours">
+        <p class="receipt-h">RetailRun</p>
+        <div class="li"><span>Items — shelf price</span><span>$20.00</span></div>
+        <div class="li zero"><span>Store commission</span><span>$0.00</span></div>
+        <div class="li zero"><span>Delivery fee</span><span>$0.00</span></div>
+        <div class="li"><span>Service fee — 10%</span><span>+ $2.00</span></div>
+        <div class="li zero"><span>Small-order fee</span><span>$0.00</span></div>
+        <div class="li tot"><span>You pay</span><span>$22.00</span></div>
+        <p class="receipt-note">100% of your tip goes to the runner. We never take a cut of it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <h2 class="h2">Your circle is yours</h2>
+      <p class="band-sub">
+        Location is the most sensitive thing an app can ask for, so we built the matching to never expose it.
+      </p>
+    </div>
+    <div class="priv">
+      <div class="card">
+        <p class="card-k">Consent first</p>
+        <h3 class="card-t">Invite only</h3>
+        <p class="card-b">Nobody joins your circle without accepting an invite. That acceptance is the consent — there's no other way in.</p>
+      </div>
+      <div class="card">
+        <p class="card-k">Server-side</p>
+        <h3 class="card-t">No one sees where you are</h3>
+        <p class="card-b">Proximity is matched on our servers. A runner sees that people were notified, never a name on a map.</p>
+      </div>
+      <div class="card">
+        <p class="card-k">Scoped</p>
+        <h3 class="card-t">Address only for a real run</h3>
+        <p class="card-b">Your address is shared for one delivery in progress, and only with the person bringing it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="band" id="onchain">
+  <div class="wrap">
+    <div class="band-head">
+      <h2 class="h2">Your runs settle on-chain</h2>
+      <p class="band-sub">
+        RetailRun's reward layer lives on <strong>Ronin</strong> — the same network
+        as Axie Infinity. Points are earned in the app. What they turn into is
+        yours, in your own wallet, and we can't take it back.
+      </p>
+    </div>
+
+    <div class="season">
+      <div class="season-grid">
+        <div>
+          <p class="eyebrow">How a season works</p>
+          <p class="chain-step"><span class="chain-n">01</span> Every completed run and request earns Run Points, logged line by line.</p>
+          <p class="chain-step"><span class="chain-n">02</span> A season runs 90 days, then closes on a snapshot — no recalculations after.</p>
+          <p class="chain-step"><span class="chain-n">03</span> A fixed pool of <b class="tok">$RUN</b> is split across everyone who earned, in proportion to points.</p>
+          <p class="chain-step"><span class="chain-n">04</span> It lands in the Ronin wallet you verified. The distributor contract sends it — not us.</p>
+        </div>
+        <div class="ledger" aria-label="Example points ledger">
+          <div class="led"><span>Completed run #15</span><span>+100</span></div>
+          <div class="led"><span>First run of the day</span><span>+25</span></div>
+          <div class="led"><span>Tip earned</span><span>+8</span></div>
+          <div class="led"><span>7-day streak</span><span>+150</span></div>
+          <div class="led"><span>New store visited</span><span>+20</span></div>
+          <div class="led led-tot"><span>Season total</span><span>2,480 pts</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nft-head">
+      <h3 class="h3">Dash NFTs multiply what you earn</h3>
+      <p class="band-sub">
+        Hold one in your wallet and your season points are multiplied at snapshot.
+        They're ERC-721s on Ronin — tradeable on Mavis Market, yours to keep or sell.
+      </p>
+    </div>
+
+    <div class="priv">
+      <div class="card nft-card">
+        <div class="nft-top"><p class="card-k">Dash Genesis</p><span class="soon">At beta</span></div>
+        <p class="mult">1.20&times;</p>
+        <p class="card-b">1,000 ever made. Boosts every season you play, permanently, plus a founder's bonus each season. Sequential token IDs — the early ones stay early.</p>
+      </div>
+      <div class="card nft-card">
+        <div class="nft-top"><p class="card-k">Dash Season</p><span class="soon">At beta</span></div>
+        <p class="mult">1.10&times;</p>
+        <p class="card-b">One per season, released after Genesis sells out. Boosts its own season, then becomes a Relic you keep — past seasons count toward collector bonuses.</p>
+      </div>
+      <div class="card nft-card">
+        <div class="nft-top"><p class="card-k">Run Badges</p><span class="soon soon-free">Free</span></div>
+        <p class="mult mult-none">&mdash;</p>
+        <p class="card-b">Earned, never bought. Offered after a completed run. No multiplier — just a permanent record that you were there when it happened.</p>
+      </div>
+    </div>
+
+    <div class="axie">
+      <p class="axie-t">Already on Ronin?</p>
+      <p class="axie-b">
+        Axie holders get a boost from day one. Verify the wallet holding your Axies,
+        complete three runs, and the multiplier applies to your season — our thank-you
+        to the community that got us here. It runs until Dash Genesis launches.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="close" id="join">
+  <div class="wrap">
+    <h2 class="h2">Going out anyway?</h2>
+    <p class="band-sub" style="margin:0 auto 30px;max-width:46ch">
+      RetailRun is in closed alpha with a small group of runners.
+      Bring your circle — it only works with people you already know.
+    </p>
+    <div class="cta-row" style="justify-content:center">
+      <a class="btn btn-go" href="mailto:hello@retailrun.app?subject=Alpha%20access">Request an invite</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-in">
+      <div>© 2026 <span class="wm-a">retail</span><span class="wm-b">run</span> — a Defient Co. product</div>
+      <div><a href="mailto:hello@retailrun.app">hello@retailrun.app</a></div>
+    </div>
+    <p class="disc">
+      Run Points and any associated tokens are rewards for using the app. They are not an
+      investment, carry no promise of value, and are not offered for sale. Figures shown are
+      illustrative examples.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
