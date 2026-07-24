@@ -105,9 +105,11 @@ a{color:var(--blue)}
     <button class="ghost" id="copyAddr">Copy address</button>
     <p class="label">Your signature</p>
     <div class="out" id="sigOut"></div>
-    <button class="go" id="copySig">Copy signature</button>
-    <p class="note">
-      Go back to RetailRun, paste the signature into step 3, and tap Verify.
+    <button class="go" id="backToApp">Send it back to RetailRun</button>
+    <button class="ghost" id="copySig">Copy signature instead</button>
+    <p class="note" id="backNote">
+      Tapping the button above hands the signature straight to the app. If
+      nothing happens, copy it and paste it into step 3 yourself.
     </p>
   </div>
 
@@ -201,6 +203,21 @@ a{color:var(--blue)}
   });
   document.getElementById('copySig').addEventListener('click', function () {
     copy(sigOut.textContent, this, 'Copied — now paste it in the app');
+  });
+
+  // Hand the signature straight back to the app via its custom scheme, so
+  // nobody has to copy and paste anything.
+  document.getElementById('backToApp').addEventListener('click', function () {
+    var url =
+      'retailrun://verify?sig=' + encodeURIComponent(sigOut.textContent) +
+      '&addr=' + encodeURIComponent(addrOut.textContent);
+    var note = document.getElementById('backNote');
+    note.textContent = 'Opening RetailRun…';
+    window.location.href = url;
+    setTimeout(function () {
+      note.textContent =
+        "If RetailRun didn't open, copy the signature below and paste it into step 3.";
+    }, 2200);
   });
 })();
 </script>
