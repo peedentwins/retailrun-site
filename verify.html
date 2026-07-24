@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify your wallet — RetailRun</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0A0F; --ink-2:#101018; --paper:#F5F7FB;
+  --dim:rgba(245,247,251,.50); --faint:rgba(245,247,251,.26);
+  --line:rgba(245,247,251,.11); --blue:#2078fa; --green:#99d63a; --amber:#F59E0B;
+  --display:'Archivo',system-ui,sans-serif;
+  --body:'Instrument Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ink);color:var(--paper);
+  font-family:var(--body);font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  padding:24px 20px 60px;
+}
+.wrap{max-width:560px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.brand img{height:24px;width:auto}
+.brand b{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.01em}
+.wm-a{color:var(--blue)}.wm-b{color:var(--green)}
+h1{font-family:var(--display);font-variation-settings:'wdth' 106,'wght' 700;
+  font-size:clamp(26px,5vw,34px);line-height:1.1;letter-spacing:-.02em;margin:0 0 12px}
+.lede{color:var(--dim);margin:0 0 26px}
+.step{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin:0 0 8px}
+.card{background:var(--ink-2);border:1px solid var(--line);border-radius:14px;
+  padding:16px;margin-bottom:16px}
+.msg{font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre-wrap;
+  word-break:break-word;color:var(--paper);margin:0}
+textarea{
+  width:100%;min-height:110px;background:var(--ink-2);border:1px solid var(--line);
+  border-radius:12px;padding:14px;color:var(--paper);font-family:var(--mono);
+  font-size:12px;line-height:1.6;resize:vertical;
+}
+button{
+  width:100%;font-family:var(--body);font-weight:700;font-size:15px;
+  padding:15px 22px;border-radius:13px;border:1px solid transparent;cursor:pointer;
+  margin-bottom:10px;
+}
+.go{background:var(--green);color:#0A1403}
+.go:disabled{opacity:.4;cursor:default}
+.ghost{background:transparent;border-color:var(--line);color:var(--paper)}
+.out{
+  font-family:var(--mono);font-size:11.5px;line-height:1.7;word-break:break-all;
+  background:rgba(153,214,58,.08);border:1px solid rgba(153,214,58,.3);
+  border-radius:12px;padding:14px;color:var(--green);margin:0 0 12px;
+}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);margin:0 0 6px}
+.note{color:var(--dim);font-size:13.5px;margin:0 0 20px}
+.warn{
+  background:rgba(245,158,11,.09);border:1px solid rgba(245,158,11,.3);
+  border-radius:12px;padding:14px;color:var(--amber);font-size:14px;margin:0 0 16px;
+}
+.hide{display:none}
+a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">
+    <img src="logo-mark.png" alt="">
+    <b><span class="wm-a">retail</span><span class="wm-b">run</span></b>
+  </div>
+
+  <h1>Verify your wallet</h1>
+  <p class="lede">
+    This proves you control the wallet. It's free, nothing goes on-chain, and it
+    cannot move any funds.
+  </p>
+
+  <div id="noWallet" class="warn hide">
+    No Ronin Wallet found in this browser. Install the Ronin Wallet extension,
+    then reload this page. On a phone, open this link inside the Ronin Wallet
+    app's own browser instead.
+  </div>
+
+  <p class="step">Step 1 — the message</p>
+  <div class="card">
+    <p class="msg" id="msg">Paste the message from the app below.</p>
+  </div>
+  <textarea id="msgInput" placeholder="Paste the message RetailRun gave you"></textarea>
+  <p class="note">Copy it from the app's wallet screen, exactly as shown.</p>
+
+  <p class="step">Step 2 — sign it</p>
+  <button class="go" id="signBtn">Connect wallet &amp; sign</button>
+  <p class="note" id="status"></p>
+
+  <div id="result" class="hide">
+    <p class="step">Step 3 — copy this back to the app</p>
+    <p class="label">Your address</p>
+    <div class="out" id="addrOut"></div>
+    <button class="ghost" id="copyAddr">Copy address</button>
+    <p class="label">Your signature</p>
+    <div class="out" id="sigOut"></div>
+    <button class="go" id="copySig">Copy signature</button>
+    <p class="note">
+      Go back to RetailRun, paste the signature into step 3, and tap Verify.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var msgEl = document.getElementById('msg');
+  var msgInput = document.getElementById('msgInput');
+  var signBtn = document.getElementById('signBtn');
+  var status = document.getElementById('status');
+  var result = document.getElementById('result');
+  var addrOut = document.getElementById('addrOut');
+  var sigOut = document.getElementById('sigOut');
+  var noWallet = document.getElementById('noWallet');
+
+  // The app can pass the message in the link, so there's nothing to paste.
+  try {
+    var q = new URLSearchParams(window.location.search);
+    var m = q.get('m');
+    if (m) {
+      msgInput.value = decodeURIComponent(m);
+      msgEl.textContent = msgInput.value;
+      msgInput.style.display = 'none';
+    }
+  } catch (e) {}
+
+  msgInput.addEventListener('input', function () {
+    msgEl.textContent = msgInput.value || 'Paste the message from the app below.';
+  });
+
+  function provider() {
+    // Ronin injects its own object; it also exposes the standard one.
+    if (window.ronin && window.ronin.provider) return window.ronin.provider;
+    if (window.ethereum) return window.ethereum;
+    return null;
+  }
+
+  if (!provider()) noWallet.classList.remove('hide');
+
+  function copy(text, btn, done) {
+    var restore = btn.textContent;
+    function ok() { btn.textContent = done; setTimeout(function () { btn.textContent = restore; }, 1600); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok).catch(fallback);
+    } else { fallback(); }
+    function fallback() {
+      var t = document.createElement('textarea');
+      t.value = text; document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); ok(); } catch (e) {}
+      document.body.removeChild(t);
+    }
+  }
+
+  signBtn.addEventListener('click', function () {
+    var p = provider();
+    var message = msgInput.value.trim();
+    if (!message) { status.textContent = 'Paste the message first.'; return; }
+    if (!p) { noWallet.classList.remove('hide'); status.textContent = 'No wallet found in this browser.'; return; }
+
+    signBtn.disabled = true;
+    status.textContent = 'Check your wallet — it should ask you to connect, then to sign.';
+
+    p.request({ method: 'eth_requestAccounts' })
+      .then(function (accounts) {
+        var addr = accounts && accounts[0];
+        if (!addr) throw new Error('No account returned.');
+        return p.request({ method: 'personal_sign', params: [message, addr] })
+          .then(function (sig) { return { addr: addr, sig: sig }; });
+      })
+      .then(function (r) {
+        addrOut.textContent = r.addr;
+        sigOut.textContent = r.sig;
+        result.classList.remove('hide');
+        status.textContent = 'Signed. Copy the signature below.';
+        signBtn.disabled = false;
+      })
+      .catch(function (err) {
+        var m = String((err && err.message) || err);
+        if (m.indexOf('User rejected') >= 0 || m.indexOf('denied') >= 0) {
+          status.textContent = 'You cancelled the request. Tap the button to try again.';
+        } else {
+          status.textContent = 'Could not sign: ' + m;
+        }
+        signBtn.disabled = false;
+      });
+  });
+
+  document.getElementById('copyAddr').addEventListener('click', function () {
+    copy(addrOut.textContent, this, 'Copied');
+  });
+  document.getElementById('copySig').addEventListener('click', function () {
+    copy(sigOut.textContent, this, 'Copied — now paste it in the app');
+  });
+})();
+</script>
+</body>
+</html>
