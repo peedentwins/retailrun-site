@@ -310,6 +310,7 @@ a{color:inherit}
         <a href="#points">Run Points</a>
         <a href="#convert">How points become $RUN</a>
         <a href="#boosts">Boosts</a>
+        <a href="#supply">$RUN supply</a>
         <a href="#treasury">Treasury &amp; governance</a>
         <a href="#ronin">Why Ronin</a>
       </div>
@@ -334,11 +335,11 @@ a{color:inherit}
       <div class="season-grid">
         <div>
           <p class="eyebrow">Where points come from</p>
-          <p class="chain-step"><span class="chain-n">01</span> <b>Completing a run</b> — the core of it. You bought the items, you handed them over.</p>
-          <p class="chain-step"><span class="chain-n">02</span> <b>Tips</b> — the more your circle thanks you, the more you earn, in cash and in points.</p>
-          <p class="chain-step"><span class="chain-n">03</span> <b>Bigger runs</b> — grabbing five things in one trip beats five separate trips, so it pays more.</p>
-          <p class="chain-step"><span class="chain-n">04</span> <b>Showing up</b> — your first run of the day carries a bonus.</p>
-          <p class="chain-step"><span class="chain-n">05</span> <b>Building the map</b> — adding a store or its menu helps everyone order accurately.</p>
+          <p class="chain-step"><span class="chain-n">01</span><span><b>Completing a run</b> — the core of it. You bought the items, you handed them over.</span></p>
+          <p class="chain-step"><span class="chain-n">02</span><span><b>Tips</b> — the more your circle thanks you, the more you earn, in cash and in points.</span></p>
+          <p class="chain-step"><span class="chain-n">03</span><span><b>Bigger runs</b> — grabbing five things in one trip beats five separate trips, so it pays more.</span></p>
+          <p class="chain-step"><span class="chain-n">04</span><span><b>Showing up</b> — your first run of the day carries a bonus.</span></p>
+          <p class="chain-step"><span class="chain-n">05</span><span><b>Building the map</b> — adding a store or its menu helps everyone order accurately.</span></p>
         </div>
         <div class="ledger" aria-label="Example points breakdown from a completed run">
           <div class="led"><span>Completed run #22</span><span>+100</span></div>
@@ -426,13 +427,51 @@ a{color:inherit}
       <div class="card nft-card">
         <div class="nft-top"><p class="card-k">Dash Season</p><span class="soon">At beta</span></div>
         <p class="mult">1.10&times;</p>
-        <p class="card-b">One per season, released after Genesis sells out. Boosts its own season, then becomes a Relic you keep.</p>
+        <p class="card-b">One collection per season, released after Genesis sells out. Boosts its own season at 1.10&times; — and then keeps earning as a Relic. See below.</p>
       </div>
       <div class="card nft-card">
         <div class="nft-top"><p class="card-k">Holding $RUN</p><span class="soon">Planned</span></div>
         <p class="mult mult-none">&mdash;</p>
         <p class="card-b">Keeping what you earned is intended to boost future seasons — rewarding people who stay in the ecosystem rather than cashing out immediately.</p>
       </div>
+    </div>
+
+    <div class="formula" id="relics">
+      <p class="eyebrow" style="margin:0 0 4px">Relics — why last season's NFT still matters</p>
+      <p class="card-b" style="margin:0 0 6px">
+        A season NFT that stops doing anything the moment its season ends is a NFT that quietly
+        becomes worthless. That's not the deal. When a Dash Season collection's season closes, it
+        becomes a <b>Relic</b> — and Relics keep working.
+      </p>
+      <div class="frow">
+        <div class="fnum">01</div>
+        <div class="ftext"><b>Set bonus, permanently.</b> Holding three or more from a single
+          collection earns a flat points bonus at every future snapshot — not just during that
+          collection's own season.</div>
+      </div>
+      <div class="frow">
+        <div class="fnum">02</div>
+        <div class="ftext"><b>Collector bonus across seasons.</b> Holding Relics from multiple
+          <em>distinct past</em> seasons earns an additional bonus. Only elapsed seasons count,
+          so the set you can complete grows over time — and the only way to get an old season's
+          Relic is from someone who already holds one.</div>
+      </div>
+      <div class="frow">
+        <div class="fnum">03</div>
+        <div class="ftext"><b>Provenance that can't be reissued.</b> Sequential token IDs and a
+          fixed per-season supply mean an early season is permanently early. Nothing gets minted
+          back into a closed season.</div>
+      </div>
+      <div class="frow">
+        <div class="fnum">04</div>
+        <div class="ftext"><b>You can always sell.</b> Relics are ERC-721s on Ronin, tradeable on
+          Mavis Market. Secondary sales carry a 5% royalty — half of which goes back to whoever
+          originally minted that token, so minting early keeps paying.</div>
+      </div>
+      <p class="note" style="margin-top:16px">
+        We're publishing these mechanics <em>before</em> the first Season NFT is ever minted,
+        deliberately. Nobody should buy one and find out the rules afterwards.
+      </p>
     </div>
 
     <div class="axie">
@@ -444,6 +483,57 @@ a{color:inherit}
         durable boosts are Dash Genesis and holding <b class="tok">$RUN</b>.
       </p>
     </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="band" id="supply">
+  <div class="wrap">
+    <div class="band-head">
+      <h2 class="h2">$RUN supply, and how it enters the world</h2>
+      <p class="band-sub">
+        The supply is fixed and the release schedule is slow on purpose. Rewards should still
+        mean something in season twenty.
+      </p>
+    </div>
+
+    <div class="calc" style="margin-top:0">
+      <span class="lbl">Total supply</span><span class="val">1,000,000,000 $RUN — fixed</span>
+      <span class="lbl">Maximum released per season</span><span class="val">1,000,000 $RUN</span>
+      <span class="lbl">Share of supply per season</span><span class="tot">0.1%</span>
+    </div>
+
+    <div class="formula">
+      <div class="frow">
+        <div class="fnum">01</div>
+        <div class="ftext"><b>Fixed supply, no inflation switch.</b> One billion $RUN, total.
+          There is no mechanism to mint beyond it.</div>
+      </div>
+      <div class="frow">
+        <div class="fnum">02</div>
+        <div class="ftext"><b>Earned into circulation, not sold into it.</b> The season pool is
+          the release valve, and it only opens for points people actually earned. A quiet season
+          releases very little — the unearned remainder is never created.</div>
+      </div>
+      <div class="frow">
+        <div class="fnum">03</div>
+        <div class="ftext"><b>The pool is re-declared each season.</b> One million is the current
+          ceiling per season, not a guarantee, and it is set openly before a season opens — never
+          adjusted after a snapshot.</div>
+      </div>
+      <div class="frow">
+        <div class="fnum">04</div>
+        <div class="ftext"><b>Revenue flows back.</b> A share of NFT margin and service-fee
+          revenue is used for treasury operations including market purchases of $RUN. This is
+          discretionary treasury policy, not a commitment, a floor, or a promise about price.</div>
+      </div>
+    </div>
+    <p class="note">
+      At 0.1% per season, releasing the full supply through rewards alone would take on the order
+      of a thousand seasons — and only if every season were maxed out, which the earn-rate design
+      makes unlikely by construction.
+    </p>
   </div>
 </section>
 
